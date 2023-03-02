@@ -15,11 +15,20 @@ const displayCard = allCard =>{
         <div class="card h-100">
             <img src="${card.image}" class="card-img-top" alt="...">
             <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                <h5 class="card-title">Features</h5>
+                <ul class="card-features">
+                   ${card.features.map(feature => `<li>${feature}</li>`).join('')}
+                </ul>
             </div>
-            <div class="card-footer">
-                <small class="text-muted">Last updated 3 mins ago</small>
+            <div class="card-footer d-flex justify-content-between align-items-center">
+                <div>
+                <h6>${card.name}</h6>
+                <p><i class="fa-solid fa-calendar-days"></i> ${card.published_in}</p>
+                </div>
+                <div>
+                <button type="button" class="btn btn-info rounded-circle"><i class="fa-solid fa-arrow-right"></i></button>
+                </div>
+
             </div>
         </div>
         
