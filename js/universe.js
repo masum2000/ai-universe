@@ -7,6 +7,9 @@ const loadAllData = () =>{
 const displayCard = allCard =>{
     console.log(allCard)
     const allCardContainer = document.getElementById('ai-container');
+
+    // allCard = allCard.slice(0,6)
+
     allCard.forEach(card =>{
         const cardDiv= document.createElement('div');
         cardDiv.classList.add('col');
@@ -20,16 +23,16 @@ const displayCard = allCard =>{
                    ${card.features.map(feature => `<li>${feature}</li>`).join('')}
                 </ul>
             </div>
-            <div class="card-footer d-flex justify-content-between align-items-center">
+             <div class="card-footer d-flex justify-content-between align-items-center">
                 <div>
                 <h6>${card.name}</h6>
                 <p><i class="fa-solid fa-calendar-days"></i> ${card.published_in}</p>
                 </div>
                 <div>
-                <button type="button" class="btn btn-info rounded-circle"><i class="fa-solid fa-arrow-right"></i></button>
+                <button onclick ="loadCardDetails(${card.id})" type="button" class="btn btn-info rounded-circle" data-bs-toggle="modal" data-bs-target="#cardDetails"><i class="fa-solid fa-arrow-right"></i></button>
                 </div>
 
-            </div>
+             </div>
         </div>
         
         `;
@@ -37,5 +40,15 @@ const displayCard = allCard =>{
     })
 }
 
+window.addEventListener('load', () => {
+    const spinner = document.querySelector('.spinner-container');
+    spinner.classList.add('d-none');
+});
+
+
+const loadCardDetails = idCard =>{
+    console.log(idCard)
+
+}
 
 loadAllData();
