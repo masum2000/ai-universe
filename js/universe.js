@@ -136,7 +136,7 @@ const loadSpinner = (value)=>{
 
   }
 }
-// show integrations
+// show integrations start
 const integrationsShow = (integrations) => {
   let integrationsValue = '';
   if (integrations === null) {
@@ -150,8 +150,8 @@ const integrationsShow = (integrations) => {
   }
 }
 
+// show all data sort by button
 const showDateTime = () =>{
-console.log('hgjkfh');
 loadSpinner(true);
 const all = allData.sort(function(a,b){
  const dateA = new Date(a.published_in);
