@@ -54,15 +54,6 @@ const displayCard = (allCard,defaultCard) =>{
 }
 
 
-
-// const loadCardDetails = (id) =>{
-//   // console.log(id)
-//   fetch(`https://openapi.programming-hero.com/api/ai/tool/${id}`)
-//   .then(res => res.json())
-//   .then(data => detailsCard(data))
-// }
-
-
 const loadCardDetails  = (id) =>{
   fetch(` https://openapi.programming-hero.com/api/ai/tool/${id}`)
   .then(res => res.json())
