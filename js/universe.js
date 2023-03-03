@@ -1,10 +1,12 @@
+// all data loader here .API
 const loadAllData = (defaultCard) =>{
-  loadSpinner(true);
+    loadSpinner(true);
     fetch('https://openapi.programming-hero.com/api/ai/tools')
     .then(res => res.json())
     .then(data =>{
       allData=data.data.tools;
       displayCard(data.data.tools,defaultCard);
+      
     })
    
 }
@@ -19,8 +21,7 @@ const displayCard = (allCard,defaultCard) =>{
       document.getElementById("see-more-btn").classList.remove("d-none");
     }
 
-    // allCard = allCard.slice(0,6)
-
+   
     allCard.forEach(card =>{
       // console.log(card.id)
         const cardDiv= document.createElement('div');
@@ -53,7 +54,7 @@ const displayCard = (allCard,defaultCard) =>{
     })
 }
 
-
+// Cards details data load here
 const loadCardDetails  = (id) =>{
   fetch(` https://openapi.programming-hero.com/api/ai/tool/${id}`)
   .then(res => res.json())
@@ -74,15 +75,15 @@ const detailsCard = cardDetails =>{
       <div class="d-flex  justify-content-around ">
         <div class="border rounded p-2 me-2 text-success text-center">
           <p>${pricing ? pricing[0].price : "Free of coast"}</p>
-         <p>${pricing ? pricing[0].plan : "Basic"}</p>
+           <p>${pricing ? pricing[0].plan : "Basic"}</p>
         </div>
         <div class="border rounded p-2 me-2 text-warning text-center" >
-        <p>${pricing ? pricing[1].price : "Free of coast"}</p>
-        <p>${pricing ? pricing[1].plan : "Basic"}</p>
+           <p>${pricing ? pricing[1].price : "Free of coast"}</p>
+           <p>${pricing ? pricing[1].plan : "Basic"}</p>
         </div>
         <div class="border rounded p-2 px-1 text-danger text-center">
-        <p>${pricing ? pricing[2].price : "Free of coast"}</p>
-        <p>${pricing ? pricing[2].plan : "Basic"}</p>
+            <p>${pricing ? pricing[2].price : "Free of coast"}</p>
+            <p>${pricing ? pricing[2].plan : "Basic"}</p>
         </div>
       </div>
       <div class="d-flex mt-2">
@@ -105,19 +106,19 @@ const detailsCard = cardDetails =>{
     </div>
     <div class="border  rounded p-2 ">
        <div>
-        <img src="${image_link[0]}" alt="..." class="w-75 rounded">
+        <img src="${image_link[0]}" alt="..." class="w-100 rounded">
         
        </div>
-       <div>
+       <div class="mt-4 text-center">
          <h6>${input_output_examples ? input_output_examples[0].input : "Can you give any example?"}</h6>
-        <p>${input_output_examples ? input_output_examples[0].output : "No! Not Yet! Take a break!!!"}</p>
+        <p class="mt-3">${input_output_examples ? input_output_examples[0].output : "No! Not Yet! Take a break!!!"}</p>
        </div>
     </div>
       `;
       detailsCardContainer.appendChild(detailsDiv);
   }
   
-// show all data
+// show all data by see more button start here
   const seeMoreData = ()=>{
     loadAllData();
     loadSpinner(true);
@@ -125,7 +126,9 @@ const detailsCard = cardDetails =>{
 
   }
   loadCardDetails();
-// spinner
+
+
+// spinner/loading start here
 const loadSpinner = (value)=>{
  const spinner= document.getElementById("loader");
   if(value){
@@ -136,7 +139,8 @@ const loadSpinner = (value)=>{
 
   }
 }
-// show integrations start
+
+// show integrations start here
 const integrationsShow = (integrations) => {
   let integrationsValue = '';
   if (integrations === null) {
@@ -150,7 +154,7 @@ const integrationsShow = (integrations) => {
   }
 }
 
-// show all data sort by button
+// show all data Sort By Date button start
 const showDateTime = () =>{
 loadSpinner(true);
 const all = allData.sort(function(a,b){
