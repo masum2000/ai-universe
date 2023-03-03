@@ -1,16 +1,24 @@
-const loadAllData = () =>{
+const loadAllData = (defaultCard) =>{
+  loadSpinner(true);
     fetch('https://openapi.programming-hero.com/api/ai/tools')
     .then(res => res.json())
-    .then(data => displayCard(data.data.tools))
+    .then(data => displayCard(data.data.tools,defaultCard))
 }
 
-const displayCard = allCard =>{
+const displayCard = (allCard,defaultCard) =>{
     // console.log(allCard)
     const allCardContainer = document.getElementById('card-container');
+    allCardContainer.innerHTML = '';
+
+    if (defaultCard && allCard.length > 6) {
+      allCard = allCard.slice(0, 6);
+      document.getElementById("see-more-btn").classList.remove("d-none");
+    }
 
     // allCard = allCard.slice(0,6)
 
     allCard.forEach(card =>{
+      // console.log(card.id)
         const cardDiv= document.createElement('div');
         cardDiv.classList.add('col');
         cardDiv.innerHTML =`
@@ -29,7 +37,7 @@ const displayCard = allCard =>{
                 <p><i class="fa-solid fa-calendar-days"></i> ${card.published_in}</p>
                 </div>
                 <div>
-                <button onclick ="loadCardDetails(${card.id})" type="button" class="btn btn-info rounded-circle" data-bs-toggle="modal" data-bs-target="#cardDetails"><i class="fa-solid fa-arrow-right"></i></button>
+                <button onclick ="loadCardDetails('${card.id}')" type="button" class="btn btn-info rounded-circle" data-bs-toggle="modal" data-bs-target="#cardDetails"><i class="fa-solid fa-arrow-right"></i></button>
                 </div>
 
              </div>
@@ -37,134 +45,117 @@ const displayCard = allCard =>{
         
         `;
         allCardContainer.appendChild(cardDiv);
+        loadSpinner(false);
     })
 }
 
 
-// const displayAllData = (cards, length) => {
-//     const cardSection = document.getElementById("card-container");
-//     cardSection.innerHTML = '';
-//     if (length && cards.length > 6) {
-//         cards = cards.slice(0, 6);
-//     }
+
+// const loadCardDetails = (id) =>{
+//   // console.log(id)
+//   fetch(`https://openapi.programming-hero.com/api/ai/tool/${id}`)
+//   .then(res => res.json())
+//   .then(data => detailsCard(data))
 // }
-// window.addEventListener('load', () => {
-//     const spinner = document.querySelector('.spinner-container');
-//     spinner.classList.add('d-none');
-// });
 
 
-// const displayCard = allCard =>{
-//     // console.log(allCard)
-//     const allCardContainer = document.getElementById('ai-container');
-
-//     // allCard = allCard.slice(0,6)
-
-//     allCard.forEach(card =>{
-//         const cardDiv= document.createElement('div');
-//         cardDiv.classList.add('col');
-//         cardDiv.innerHTML =`
-const loadCardDetails  = () =>{
-    fetch(' https://openapi.programming-hero.com/api/ai/tool/01')
-    .then(res => res.json())
-    .then(data =>detailsCard(data))
+const loadCardDetails  = (id) =>{
+  fetch(` https://openapi.programming-hero.com/api/ai/tool/${id}`)
+  .then(res => res.json())
+  .then(data =>detailsCard(data.data))
 }
 
 const detailsCard = cardDetails =>{
-    console.log(cardDetails.data);
-    const detailsCardContainer = document.getElementById('card-details-container');
-        const detailsDiv = document.createElement('div');
-        detailsDiv.innerHTML = `
-        <div class="border border-danger rounded p-2 ">
+  const detailsCardContainer = document.getElementById('card-details-container');
+  detailsCardContainer.innerHTML = '';
+  const { description, image_link, input_output_examples, pricing, accuracy, integrations, features } = cardDetails;
+      const detailsDiv = document.createElement('div');
+      detailsDiv.classList.add('modal-body',  'd-flex', 'flex-column',  'flex-md-row', 'gap-2');
+      detailsDiv.innerHTML = `
+      <div class="border border-danger rounded p-2 ">
+      <div>
+        <h6>${description}</h6>
+      </div>
+      <div class="d-flex  justify-content-around ">
+        <div class="border rounded p-2 me-2 text-success text-center">
+          <p>${pricing ? pricing[0].price : "Free of coast"}</p>
+         <p>${pricing ? pricing[0].plan : "Basic"}</p>
+        </div>
+        <div class="border rounded p-2 me-2 text-warning text-center" >
+        <p>${pricing ? pricing[1].price : "Free of coast"}</p>
+        <p>${pricing ? pricing[1].plan : "Basic"}</p>
+        </div>
+        <div class="border rounded p-2 px-1 text-danger text-center">
+        <p>${pricing ? pricing[2].price : "Free of coast"}</p>
+        <p>${pricing ? pricing[2].plan : "Basic"}</p>
+        </div>
+      </div>
+      <div class="d-flex mt-2">
         <div>
-          <h6>${cardDetails.data.description}</h6>
+          <h6>Features</h6>
+          <ul>
+          <li>${features ? features[1].feature_name : "no found feature"}</li> 
+          <li>${features ? features[2].feature_name : "no found feature"}</li> 
+          <li>${features ? features[3].feature_name : "no found feature"}</li> 
+
+          </ul>
         </div>
-        <div class="d-flex  justify-content-around ">
-          <div class="border rounded p-2 me-2 text-success">$10/month Basic</div>
-          <div class="border rounded p-2 me-2 text-warning" >$50/month Pro</div>
-          <div class="border rounded p-2 px-1 text-danger">Contact us Enterprise</div>
-        </div>
-        <div class="d-flex mt-2">
-          <div>
-            <h6>Features</h6>
-            <ul>
-              <li>Customizable responses</li>
-              <li>Multilingual support</li>
-              <li>Seamless integration</li>
-            </ul>
-          </div>
-          <div>
-            <h6>Integrations</h6>
-            <ul>
-              <li>FB Messenger</li>
-              <li>Slack</li>
-              <li>Telegram</li>
-            </ul>
-          </div>
+        <div>
+          <h6>Integrations</h6>
+          <ul>
+ ${integrations.map(integrations => `<li>${integrations}</li>`).join('')}
+
+          </ul>
         </div>
       </div>
-      <div class="border  rounded p-2 ">
-         <div>
-          <img src="${cardDetails.data.image_link[0]}" alt="..." class="w-75 rounded">
-          
-         </div>
-         <div>
-           <h6>${cardDetails.data.input_output_examples[0]}</h6>
-          <p></p>
-         </div>
-      </div>
-        `;
-        detailsCardContainer.appendChild(detailsDiv);
-    }
-    
+    </div>
+    <div class="border  rounded p-2 ">
+       <div>
+        <img src="${image_link[0]}" alt="..." class="w-75 rounded">
+        
+       </div>
+       <div>
+         <h6>${input_output_examples ? input_output_examples[0].input : "Can you give any example?"}</h6>
+        <p>${input_output_examples ? input_output_examples[0].output : "No! Not Yet! Take a break!!!"}</p>
+       </div>
+    </div>
+      `;
+      detailsCardContainer.appendChild(detailsDiv);
+  }
+  
+// show all data
+  const seeMoreData = ()=>{
+    loadAllData();
+    loadSpinner(true);
+    document.getElementById("see-more-btn").classList.add("d-none");
 
+  }
+  loadCardDetails();
+// spinner
+const loadSpinner = (value)=>{
+ const spinner= document.getElementById("loader");
+  if(value){
+    spinner.classList.remove("d-none");
+  }
+  else{
+    spinner.classList.add("d-none");
 
+  }
+}
 
+const modalSection = document.getElementById("modal_section");
 
-// if (numCardsToShow < numTools) {
-//     const seeMoreBtnContainer = document.createElement('div');
-//     seeMoreBtnContainer.classList.add('seeMore');
+// <div class="bg-white text-xl font-semibold text-center text-green-600 rounded-md py-6 px-2">
+// 
+// </div>
+//           // feature
 
-//     const seeMoreBtn = document.createElement('button');
-//     seeMoreBtn.innerText = "See More";
-//     seeMoreBtn.classList.add('btn', 'btn-danger', 'mb-3');
-//     seeMoreBtn.addEventListener('click', () => {
-//         const newNumCards = numCards + 6;
-//         displayAiuniverse(data, newNumCards);
-//     });
-
-//     seeMoreBtnContainer.appendChild(seeMoreBtn);
-//     cardContainer.appendChild(seeMoreBtnContainer);
-// }
-
-// const displayCardDetails = phone =>{
-//     console.log(card);
-//     const cardTitle = document.getElementById('cardDetailsLabel');
-//     cardTitle.innerText = tools.name;
-//     const cardDetails = document.getElementById('cardDetails');
-// }
-
-// document.getElementById("sort-by-date").addEventListener ('click', function(){
-
-
-//     allData.sort(function(a, b) {
-//     var dateA = new Date(a.published_in)
-//     var dateB = new Date(b.published_in);
-//     return dateA - dateB; 
-//     });
-//     // start loader
-//     toggoleSpiner (true)
-//     const aiTools = document.getElementById('Ai-Tools')
-    
-//     aiTools.innerHTML=''
-    
-//     allData.forEach (SingleTools => { 
-//     aiToolsShow(SingleTools, aiTools)
-//     })
-//     document.getElementById('see_more").classList.add("d-none')
-    
-//     })
-
-loadCardDetails();
-
-loadAllData();
+//   
+//                 // intre
+// //  ques
+// <div class="card-body text-justify px-0">
+// <h2 class="card-title font-semibold">
+// ${input_output_examples ? input_output_examples[0].input : "Can you give any example?"}
+//     </h2>
+// <p>${input_output_examples ? input_output_examples[0].output : "No! Not Yet! Take a break!!!"}</p>
+// </div>
