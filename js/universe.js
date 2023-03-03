@@ -2,7 +2,11 @@ const loadAllData = (defaultCard) =>{
   loadSpinner(true);
     fetch('https://openapi.programming-hero.com/api/ai/tools')
     .then(res => res.json())
-    .then(data => displayCard(data.data.tools,defaultCard))
+    .then(data =>{
+      allData=data.data.tools;
+      displayCard(data.data.tools,defaultCard);
+    })
+   
 }
 
 const displayCard = (allCard,defaultCard) =>{
@@ -103,8 +107,7 @@ const detailsCard = cardDetails =>{
         <div>
           <h6>Integrations</h6>
           <ul>
- ${integrations.map(integrations => `<li>${integrations}</li>`).join('')}
-
+         ${integrationsShow(integrations)}
           </ul>
         </div>
       </div>
@@ -142,20 +145,28 @@ const loadSpinner = (value)=>{
 
   }
 }
+// show integrations
+const integrationsShow = (integrations) => {
+  let integrationsValue = '';
+  if (integrations === null) {
+      return `<li>No items found</li>`;
+  }
+  else {
+    integrations.forEach(integrations => {
+      integrationsValue += `<li>${integrations ? integrations : "no items found"}</li>`;
+      });
+      return integrationsValue;
+  }
+}
 
-const modalSection = document.getElementById("modal_section");
-
-// <div class="bg-white text-xl font-semibold text-center text-green-600 rounded-md py-6 px-2">
-// 
-// </div>
-//           // feature
-
-//   
-//                 // intre
-// //  ques
-// <div class="card-body text-justify px-0">
-// <h2 class="card-title font-semibold">
-// ${input_output_examples ? input_output_examples[0].input : "Can you give any example?"}
-//     </h2>
-// <p>${input_output_examples ? input_output_examples[0].output : "No! Not Yet! Take a break!!!"}</p>
-// </div>
+const showDateTime = () =>{
+console.log('hgjkfh');
+loadSpinner(true);
+const all = allData.sort(function(a,b){
+ const dateA = new Date(a.published_in);
+ const dateB = new Date(b.published_in);
+ return dateB - dateA; 
+});
+document.getElementById("see-more-btn").classList.add("d-none");
+displayCard(all);
+}
