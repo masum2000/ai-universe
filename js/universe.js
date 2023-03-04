@@ -68,7 +68,7 @@ const detailsCard = cardDetails =>{
       const detailsDiv = document.createElement('div');
       detailsDiv.classList.add('modal-body',  'd-flex', 'flex-column',  'flex-md-row', 'gap-2');
       detailsDiv.innerHTML = `
-      <div class="border border-danger rounded p-2 ">
+      <div class="border border-danger rounded p-2 card-details">
       <div>
         <h6>${description}</h6>
       </div>
@@ -93,6 +93,7 @@ const detailsCard = cardDetails =>{
           <li>${features ? features[1].feature_name : "no found feature"}</li> 
           <li>${features ? features[2].feature_name : "no found feature"}</li> 
           <li>${features ? features[3].feature_name : "no found feature"}</li> 
+          
 
           </ul>
         </div>
@@ -106,8 +107,10 @@ const detailsCard = cardDetails =>{
     </div>
     <div class="border  rounded p-2 ">
        <div>
+       <div class="accuracy-btn">
+          ${accuracy.score * 100 > 80 ? '<button class="btn btn-info">Accuracy: ' + accuracy.score * 100 + '%</button>' : '<button class="btn btn-warning">Accuracy Low</button>'}
+          </div>
         <img src="${image_link[0]}" alt="..." class="w-100 rounded">
-        
        </div>
        <div class="mt-4 text-center">
          <h6>${input_output_examples ? input_output_examples[0].input : "Can you give any example?"}</h6>
