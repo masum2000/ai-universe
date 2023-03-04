@@ -107,8 +107,8 @@ const detailsCard = cardDetails =>{
     </div>
     <div class="border  rounded p-2 ">
        <div>
-       <div class="accuracy-btn">
-          ${accuracy.score * 100 > 80 ? '<button class="btn btn-info">Accuracy: ' + accuracy.score * 100 + '%</button>' : '<button class="btn btn-warning">Accuracy Low</button>'}
+         <div class="accuracy-btn">
+            ${accuracy.score * 100 > 80 ? '<button class="btn btn-info text-white"> accuracy ' + accuracy.score * 100 + '%</button>' : '<button class="btn btn-warning text-white">accuracy Low</button>'}
           </div>
         <img src="${image_link[0]}" alt="..." class="w-100 rounded">
        </div>
